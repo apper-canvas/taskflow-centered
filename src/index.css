@@ -1,0 +1,111 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Import react-toastify CSS */
+@import 'react-toastify/dist/ReactToastify.css';
+
+/* Ensure scrollbars are visible */
+body {
+  overflow-y: auto;
+  overflow-x: hidden;
+  margin: 0;
+  min-height: 100vh;
+  font-family: 'Inter', 'ui-sans-serif', 'system-ui';
+}
+
+/* Prevent horizontal overflow */
+* {
+  max-width: 100%;
+}
+
+/* Main content areas must allow scroll */
+.main-content {
+  overflow-y: auto;
+  height: 100vh;
+}
+
+@layer utilities {
+  /* Only use scrollbar-hide for specific UI elements, never main content */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom focus styles */
+.focus-ring {
+  @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+}
+
+/* Priority color classes */
+.priority-high {
+  @apply bg-accent text-white;
+}
+.priority-medium {
+  @apply bg-warning text-gray-900;
+}
+.priority-low {
+  @apply bg-success text-white;
+}
+
+/* Category colors */
+.category-red { @apply bg-red-500; }
+.category-orange { @apply bg-orange-500; }
+.category-yellow { @apply bg-yellow-500; }
+.category-green { @apply bg-green-500; }
+.category-blue { @apply bg-blue-500; }
+.category-indigo { @apply bg-indigo-500; }
+.category-purple { @apply bg-purple-500; }
+.category-pink { @apply bg-pink-500; }
+
+/* Drag and drop styles */
+.drag-preview {
+  @apply opacity-50 transform rotate-3;
+}
+
+.drop-zone {
+  @apply bg-primary/10 border-2 border-dashed border-primary/30 rounded-lg;
+}
+
+/* Completion animation */
+@keyframes task-complete {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: translateX(100%) scale(0.8);
+    opacity: 0;
+  }
+}
+
+.task-completing {
+  animation: task-complete 0.4s ease-out forwards;
+}
+
+/* Confetti animation */
+@keyframes confetti-fall {
+  0% {
+    transform: translateY(-100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+.confetti-piece {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  z-index: 9999;
+  animation: confetti-fall 3s linear forwards;
+}
