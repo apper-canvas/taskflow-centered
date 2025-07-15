@@ -22,23 +22,23 @@ const TaskList = ({
     
     // Sort tasks
     switch (sortBy) {
-      case 'priority':
+case 'priority':
         const priorityOrder = { high: 3, medium: 2, low: 1 };
-        processed.sort((a, b) => priorityOrder[b.priority] - priorityOrder[a.priority]);
+        processed.sort((a, b) => priorityOrder[b.priority_c] - priorityOrder[a.priority_c]);
         break;
-      case 'dueDate':
+case 'dueDate':
         processed.sort((a, b) => {
-          if (!a.dueDate && !b.dueDate) return 0;
-          if (!a.dueDate) return 1;
-          if (!b.dueDate) return -1;
-          return new Date(a.dueDate) - new Date(b.dueDate);
+          if (!a.due_date_c && !b.due_date_c) return 0;
+          if (!a.due_date_c) return 1;
+          if (!b.due_date_c) return -1;
+          return new Date(a.due_date_c) - new Date(b.due_date_c);
         });
         break;
-      case 'title':
-        processed.sort((a, b) => a.title.localeCompare(b.title));
+case 'title':
+        processed.sort((a, b) => a.title_c.localeCompare(b.title_c));
         break;
-      default:
-        processed.sort((a, b) => a.order - b.order);
+default:
+        processed.sort((a, b) => a.order_c - b.order_c);
     }
     
     setSortedTasks(processed);
@@ -49,15 +49,15 @@ const TaskList = ({
       processed.forEach(task => {
         let groupKey;
         switch (groupBy) {
-          case 'status':
-            groupKey = task.completed ? 'Completed' : 'Active';
+case 'status':
+            groupKey = task.completed_c ? 'Completed' : 'Active';
             break;
-          case 'priority':
-            groupKey = task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : 'No Priority';
+case 'priority':
+            groupKey = task.priority_c ? task.priority_c.charAt(0).toUpperCase() + task.priority_c.slice(1) : 'No Priority';
             break;
-          case 'category':
-            const category = categories.find(c => c.Id === task.categoryId);
-            groupKey = category ? category.name : 'No Category';
+case 'category':
+            const category = categories.find(c => c.Id === task.category_id_c);
+            groupKey = category ? category.Name : 'No Category';
             break;
           default:
             groupKey = 'All Tasks';
@@ -72,8 +72,8 @@ const TaskList = ({
     }
   }, [tasks, categories, sortBy, groupBy]);
   
-  const getCategoryForTask = (task) => {
-    return categories.find(c => c.Id === task.categoryId);
+const getCategoryForTask = (task) => {
+    return categories.find(c => c.Id === task.category_id_c);
   };
   
   if (tasks.length === 0) {

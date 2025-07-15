@@ -7,23 +7,23 @@ const categoryService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
       
-      const params = {
+const params = {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
           { field: { Name: "Owner" } },
-          { field: { Name: "color" } },
-          { field: { Name: "order" } }
+          { field: { Name: "color_c" } },
+          { field: { Name: "order_c" } }
         ],
         orderBy: [
           {
-            fieldName: "order",
+            fieldName: "order_c",
             sorttype: "ASC"
           }
         ]
       };
       
-      const response = await apperClient.fetchRecords('category', params);
+      const response = await apperClient.fetchRecords('category_c', params);
       
       if (!response.success) {
         console.error(response.message);
@@ -45,17 +45,17 @@ const categoryService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
       
-      const params = {
+const params = {
         fields: [
           { field: { Name: "Name" } },
           { field: { Name: "Tags" } },
           { field: { Name: "Owner" } },
-          { field: { Name: "color" } },
-          { field: { Name: "order" } }
+          { field: { Name: "color_c" } },
+          { field: { Name: "order_c" } }
         ]
       };
       
-      const response = await apperClient.getRecordById('category', parseInt(id, 10), params);
+      const response = await apperClient.getRecordById('category_c', parseInt(id, 10), params);
       
       if (!response.success) {
         console.error(response.message);
@@ -77,20 +77,20 @@ const categoryService = {
         apperPublicKey: import.meta.env.VITE_APPER_PUBLIC_KEY
       });
       
-      // Only include Updateable fields
+// Only include Updateable fields
       const createData = {
         Name: categoryData.name || categoryData.Name,
         Tags: categoryData.Tags || "",
         Owner: categoryData.Owner || null,
-        color: categoryData.color,
-        order: categoryData.order
+        color_c: categoryData.color,
+        order_c: categoryData.order || 0
       };
       
       const params = {
         records: [createData]
       };
       
-      const response = await apperClient.createRecord('category', params);
+      const response = await apperClient.createRecord('category_c', params);
       
       if (!response.success) {
         console.error(response.message);
@@ -135,18 +135,18 @@ const categoryService = {
       if (updateData.Owner !== undefined) {
         updateFields.Owner = updateData.Owner;
       }
-      if (updateData.color !== undefined) {
-        updateFields.color = updateData.color;
+if (updateData.color !== undefined) {
+        updateFields.color_c = updateData.color;
       }
       if (updateData.order !== undefined) {
-        updateFields.order = updateData.order;
+        updateFields.order_c = updateData.order;
       }
       
       const params = {
         records: [updateFields]
       };
       
-      const response = await apperClient.updateRecord('category', params);
+      const response = await apperClient.updateRecord('category_c', params);
       
       if (!response.success) {
         console.error(response.message);
@@ -181,7 +181,7 @@ const categoryService = {
         RecordIds: [parseInt(id, 10)]
       };
       
-      const response = await apperClient.deleteRecord('category', params);
+const response = await apperClient.deleteRecord('category_c', params);
       
       if (!response.success) {
         console.error(response.message);

@@ -26,7 +26,7 @@ const TaskInput = ({
     e.preventDefault();
     if (!title.trim()) return;
     
-    const taskData = {
+const taskData = {
       title: title.trim(),
       priority,
       categoryId: categoryId ? parseInt(categoryId, 10) : null,
@@ -128,8 +128,8 @@ const TaskInput = ({
                 >
                   <option value="">No category</option>
                   {categories.map((category) => (
-                    <option key={category.Id} value={category.Id}>
-                      {category.name}
+<option key={category.Id} value={category.Id}>
+                      {category.Name}
                     </option>
                   ))}
                 </select>

@@ -25,12 +25,12 @@ const CategorySidebar = ({
     'blue', 'indigo', 'purple', 'pink'
   ];
   
-  const getTaskCountForCategory = (categoryId) => {
-    return tasks.filter(task => task.categoryId === categoryId).length;
+const getTaskCountForCategory = (categoryId) => {
+    return tasks.filter(task => task.category_id_c === categoryId).length;
   };
   
-  const getCompletedTasksCount = () => {
-    return tasks.filter(task => task.completed).length;
+const getCompletedTasksCount = () => {
+    return tasks.filter(task => task.completed_c).length;
   };
   
   const getProgressPercentage = () => {
@@ -41,7 +41,7 @@ const CategorySidebar = ({
   const handleCreateCategory = () => {
     if (!newCategoryName.trim()) return;
     
-    const categoryData = {
+const categoryData = {
       name: newCategoryName.trim(),
       color: newCategoryColor
     };
@@ -206,16 +206,16 @@ const CategorySidebar = ({
       <div className="p-4 border-t border-gray-100 text-xs text-gray-500">
         <div className="space-y-1">
           <div className="flex justify-between">
-            <span>High Priority</span>
-            <span>{tasks.filter(t => t.priority === 'high' && !t.completed).length}</span>
+<span>High Priority</span>
+            <span>{tasks.filter(t => t.priority_c === 'high' && !t.completed_c).length}</span>
           </div>
           <div className="flex justify-between">
             <span>Due Today</span>
-            <span>
+<span>
               {tasks.filter(t => {
-                if (!t.dueDate || t.completed) return false;
+                if (!t.due_date_c || t.completed_c) return false;
                 const today = new Date().toISOString().split('T')[0];
-                return t.dueDate === today;
+                return t.due_date_c === today;
               }).length}
             </span>
           </div>

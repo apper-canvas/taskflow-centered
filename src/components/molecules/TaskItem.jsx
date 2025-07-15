@@ -15,14 +15,14 @@ const TaskItem = ({
   className = ''
 }) => {
   const [isEditing, setIsEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState(task.title);
+const [editTitle, setEditTitle] = useState(task.title_c);
   const [isCompleting, setIsCompleting] = useState(false);
   
-  const isDue = task.dueDate && isToday(parseISO(task.dueDate));
-  const isOverdue = task.dueDate && isPast(parseISO(task.dueDate)) && !isToday(parseISO(task.dueDate));
+const isDue = task.due_date_c && isToday(parseISO(task.due_date_c));
+  const isOverdue = task.due_date_c && isPast(parseISO(task.due_date_c)) && !isToday(parseISO(task.due_date_c));
   
-  const handleToggleComplete = async () => {
-    if (task.completed) {
+const handleToggleComplete = async () => {
+    if (task.completed_c) {
       onToggleComplete?.(task.Id);
       return;
     }
@@ -54,8 +54,8 @@ const TaskItem = ({
     }
   };
   
-  const handleSaveEdit = () => {
-    if (editTitle.trim() && editTitle !== task.title) {
+const handleSaveEdit = () => {
+    if (editTitle.trim() && editTitle !== task.title_c) {
       onEdit?.(task.Id, { title: editTitle.trim() });
     }
     setIsEditing(false);
@@ -64,8 +64,8 @@ const TaskItem = ({
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
       handleSaveEdit();
-    } else if (e.key === 'Escape') {
-      setEditTitle(task.title);
+} else if (e.key === 'Escape') {
+      setEditTitle(task.title_c);
       setIsEditing(false);
     }
   };
@@ -81,14 +81,14 @@ const TaskItem = ({
       }}
       exit={{ opacity: 0, x: 100 }}
       transition={{ duration: 0.2 }}
-      className={`group bg-white rounded-lg p-4 border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-150 ${
-        task.completed ? 'opacity-60' : ''
+className={`group bg-white rounded-lg p-4 border border-gray-100 hover:shadow-md hover:border-gray-200 transition-all duration-150 ${
+        task.completed_c ? 'opacity-60' : ''
       } ${isCompleting ? 'task-completing' : ''} ${className}`}
     >
       <div className="flex items-start gap-3">
         <div className="flex-shrink-0 pt-0.5">
-          <Checkbox
-            checked={task.completed}
+<Checkbox
+            checked={task.completed_c}
             onChange={handleToggleComplete}
             size="md"
           />
@@ -106,39 +106,39 @@ const TaskItem = ({
               autoFocus
             />
           ) : (
-            <h3 
+<h3 
               className={`font-medium text-gray-900 cursor-pointer hover:text-primary transition-colors ${
-                task.completed ? 'line-through' : ''
+                task.completed_c ? 'line-through' : ''
               }`}
               onClick={() => setIsEditing(true)}
-            >
-              {task.title}
+>
+              {task.title_c}
             </h3>
           )}
           
-          <div className="flex items-center gap-2 mt-2">
-            {task.priority && (
-              <Badge variant={task.priority} size="sm">
-                {task.priority}
+<div className="flex items-center gap-2 mt-2">
+            {task.priority_c && (
+              <Badge variant={task.priority_c} size="sm">
+                {task.priority_c}
               </Badge>
             )}
             
-            {category && (
+{category && (
               <div className="flex items-center gap-1">
-                <div className={`w-2 h-2 rounded-full category-${category.color}`} />
-                <span className="text-xs text-gray-500">{category.name}</span>
+                <div className={`w-2 h-2 rounded-full category-${category.color_c}`} />
+                <span className="text-xs text-gray-500">{category.Name}</span>
               </div>
             )}
             
-            {task.dueDate && (
+{task.due_date_c && (
               <div className={`flex items-center gap-1 text-xs ${
                 isOverdue ? 'text-error' : isDue ? 'text-warning' : 'text-gray-500'
               }`}>
                 <ApperIcon name="Calendar" size={12} />
                 <span>
-                  {isToday(parseISO(task.dueDate)) 
+                  {isToday(parseISO(task.due_date_c)) 
                     ? 'Today' 
-                    : format(parseISO(task.dueDate), 'MMM d')
+                    : format(parseISO(task.due_date_c), 'MMM d')
                   }
                 </span>
                 {isOverdue && <ApperIcon name="AlertCircle" size={12} />}

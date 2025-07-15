@@ -1,33 +1,53 @@
-import { Outlet } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from './App';
-import ApperIcon from './components/ApperIcon';
-
+import { Outlet } from 'react-router-dom'
+import { useContext } from 'react'
+import { useSelector } from 'react-redux'
+import { AuthContext } from './App'
+import ApperIcon from './components/ApperIcon'
+import Button from './components/atoms/Button'
 function Layout() {
-  const { logout } = useContext(AuthContext);
+  const { isInitialized, logout } = useContext(AuthContext)
+  const { user, isAuthenticated } = useSelector((state) => state.user)
+  
+  if (!isInitialized) {
+    return (
+      <div className="loading flex items-center justify-center p-6 h-full w-full">
+        <svg className="animate-spin" xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M12 2v4"></path>
+          <path d="m16.2 7.8 2.9-2.9"></path>
+          <path d="M18 12h4"></path>
+          <path d="m16.2 16.2 2.9 2.9"></path>
+          <path d="M12 18v4"></path>
+          <path d="m4.9 19.1 2.9-2.9"></path>
+          <path d="M2 12h4"></path>
+          <path d="m4.9 4.9 2.9 2.9"></path>
+        </svg>
+      </div>
+    )
+  }
   
   return (
-    <div className="h-screen flex flex-col overflow-hidden bg-background">
-      <header className="bg-white border-b border-gray-200 px-6 py-4 flex justify-between items-center">
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">T</span>
+    <div className="min-h-screen bg-background">
+      {isAuthenticated && (
+        <div className="absolute top-4 right-4 z-50">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-gray-600">
+              {user?.firstName} {user?.lastName}
+            </span>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={logout}
+              icon="LogOut"
+              className="text-gray-600 hover:text-error"
+            >
+              Logout
+            </Button>
           </div>
-          <h1 className="text-xl font-bold text-gray-900">TaskFlow</h1>
         </div>
-        <button
-          onClick={logout}
-          className="flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
-        >
-          <ApperIcon name="LogOut" size={18} />
-          <span className="text-sm font-medium">Logout</span>
-        </button>
-      </header>
-      <main className="flex-1 overflow-hidden">
-        <Outlet />
-      </main>
+      )}
+      <Outlet />
     </div>
-  );
+  )
 }
 
 export default Layout;

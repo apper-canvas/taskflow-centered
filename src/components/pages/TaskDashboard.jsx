@@ -52,8 +52,8 @@ const TaskDashboard = () => {
     let filtered = [...tasks];
     
     // Apply category filter
-    if (activeCategory) {
-      filtered = filtered.filter(task => task.categoryId === activeCategory);
+if (activeCategory) {
+      filtered = filtered.filter(task => task.category_id_c === activeCategory);
     }
     
     // Apply status filter
@@ -73,10 +73,10 @@ const TaskDashboard = () => {
     }
     
     // Apply search filter
-    if (searchQuery.trim()) {
+if (searchQuery.trim()) {
       const query = searchQuery.toLowerCase();
       filtered = filtered.filter(task =>
-        task.title.toLowerCase().includes(query)
+        task.title_c.toLowerCase().includes(query)
       );
     }
     
@@ -85,15 +85,15 @@ const TaskDashboard = () => {
   
   // Task counts for filters
   const taskCounts = useMemo(() => {
-    const base = activeCategory 
-      ? tasks.filter(task => task.categoryId === activeCategory)
+const base = activeCategory 
+      ? tasks.filter(task => task.category_id_c === activeCategory)
       : tasks;
       
     return {
-      all: base.length,
-      active: base.filter(task => !task.completed).length,
-      completed: base.filter(task => task.completed).length,
-      high: base.filter(task => task.priority === 'high' && !task.completed).length
+all: base.length,
+      active: base.filter(task => !task.completed_c).length,
+      completed: base.filter(task => task.completed_c).length,
+      high: base.filter(task => task.priority_c === 'high' && !task.completed_c).length
     };
   }, [tasks, activeCategory]);
   
@@ -114,8 +114,7 @@ const TaskDashboard = () => {
       setTasks(prev => prev.map(task => 
         task.Id === taskId ? updatedTask : task
       ));
-      
-      if (updatedTask.completed) {
+if (updatedTask.completed_c) {
         toast.success('Task completed! 🎉');
       }
     } catch (err) {
@@ -170,8 +169,8 @@ const TaskDashboard = () => {
     }
   };
   
-  const handleDeleteCategory = async (categoryId) => {
-    const tasksInCategory = tasks.filter(task => task.categoryId === categoryId);
+const handleDeleteCategory = async (categoryId) => {
+    const tasksInCategory = tasks.filter(task => task.category_id_c === categoryId);
     
     if (tasksInCategory.length > 0) {
       if (!confirm(`This category contains ${tasksInCategory.length} tasks. Delete anyway?`)) {
@@ -183,10 +182,10 @@ const TaskDashboard = () => {
       await categoryService.delete(categoryId);
       setCategories(prev => prev.filter(cat => cat.Id !== categoryId));
       
-      // Update tasks to remove category reference
+// Update tasks to remove category reference
       const updatedTasks = tasks.map(task => 
-        task.categoryId === categoryId 
-          ? { ...task, categoryId: null }
+        task.category_id_c === categoryId 
+          ? { ...task, category_id_c: null }
           : task
       );
       setTasks(updatedTasks);
@@ -201,7 +200,7 @@ const TaskDashboard = () => {
   const handleBulkActions = async (action) => {
     switch (action) {
       case 'markAllComplete':
-        const activeTasks = tasks.filter(task => !task.completed);
+const activeTasks = tasks.filter(task => !task.completed_c);
         if (activeTasks.length === 0) {
           toast.info('No active tasks to complete');
           return;
@@ -220,7 +219,7 @@ const TaskDashboard = () => {
         break;
         
       case 'clearCompleted':
-        const completedTasks = tasks.filter(task => task.completed);
+const completedTasks = tasks.filter(task => task.completed_c);
         if (completedTasks.length === 0) {
           toast.info('No completed tasks to clear');
           return;
@@ -234,7 +233,7 @@ const TaskDashboard = () => {
           for (const task of completedTasks) {
             await taskService.delete(task.Id);
           }
-          setTasks(prev => prev.filter(task => !task.completed));
+setTasks(prev => prev.filter(task => !task.completed_c));
           toast.success(`Cleared ${completedTasks.length} completed tasks`);
         } catch (err) {
           toast.error('Failed to clear completed tasks');

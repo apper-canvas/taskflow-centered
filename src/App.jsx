@@ -1,8 +1,9 @@
 import { createContext, useEffect, useState } from 'react';
 import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
-import { Provider } from 'react-redux';
+import { Provider, useDispatch } from 'react-redux';
 import { ToastContainer } from 'react-toastify';
 import { store } from './store/store';
+import { setUser, clearUser } from './store/userSlice';
 import Layout from './Layout';
 import { routeArray } from './config/routes';
 import NotFound from '@/components/pages/NotFound';
@@ -18,6 +19,7 @@ export const AuthContext = createContext(null);
 
 function AppContent() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [isInitialized, setIsInitialized] = useState(false);
   
   // Initialize ApperUI once when the app loads
@@ -55,8 +57,9 @@ function AppContent() {
             }
           } else {
             navigate('/');
-          }
-          // Store user information in Redux would be here
+}
+          // Store user information in Redux
+          dispatch(setUser(JSON.parse(JSON.stringify(user))));
         } else {
           // User is not authenticated
           if (!isAuthPage) {
@@ -79,22 +82,24 @@ function AppContent() {
             navigate(currentPath);
           } else {
             navigate('/login');
-          }
+}
+          dispatch(clearUser());
         }
       },
       onError: function(error) {
         console.error("Authentication failed:", error);
       }
     });
-  }, [navigate]);
+}, [navigate, dispatch]);
   
   // Authentication methods to share via context
   const authMethods = {
     isInitialized,
     logout: async () => {
       try {
-        const { ApperUI } = window.ApperSDK;
+const { ApperUI } = window.ApperSDK;
         await ApperUI.logout();
+        dispatch(clearUser());
         navigate('/login');
       } catch (error) {
         console.error("Logout failed:", error);
